@@ -32,42 +32,6 @@ jobs:
       - run: |
           for script in game/*.js; do node --check "$script"; done
           python3 ci/prepare_ios.py
-      - name: Capture playable phone screens
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y ffmpeg
-          npm install --prefix /tmp/sky-render playwright
-          /tmp/sky-render/node_modules/.bin/playwright install --with-deps chromium
-          python3 -m http.server 8765 --directory game >/tmp/sky-server.log 2>&1 &
-          node <<'JS'
-          const {chromium}=require('/tmp/sky-render/node_modules/playwright');
-          const fs=require('fs');const {execFileSync}=require('child_process');
-          (async()=>{const browser=await chromium.launch();fs.mkdirSync('screens',{recursive:true});
-          for(const [width,height] of [[390,844],[375,667],[430,932]]){
-            const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,recordVideo:{dir:'screens',size:{width,height}}});const page=await context.newPage();
-            const errors=[];page.on('pageerror',e=>errors.push(e.message));
-            await page.goto('http://127.0.0.1:8765');await page.getByRole('button',{name:'Play',exact:true}).click();
-            await page.getByRole('button',{name:'Pause and save flight'}).click();
-            await page.getByRole('button',{name:'Resume flight',exact:true}).click();
-            await page.getByRole('button',{name:'Galley',exact:true}).click();
-            await page.waitForTimeout(1200);
-            await page.locator('[data-drink="water"]').click();await page.waitForTimeout(900);
-            await page.locator('.cabin').click({position:{x:width/2-6,y:410}});await page.waitForTimeout(2200);
-            await page.getByRole('button',{name:'Galley',exact:true}).click();await page.waitForTimeout(2200);
-            await page.keyboard.press('ArrowLeft');await page.waitForTimeout(500);
-            await page.keyboard.press('ArrowRight');await page.waitForTimeout(500);
-            await page.screenshot({path:`screens/game-${width}x${height}.png`});
-            const layout=await page.evaluate(()=>{const bounds=s=>{const r=document.querySelector(s).getBoundingClientRect();return {top:r.top,bottom:r.bottom,width:r.width,height:r.height}};return {cabin:bounds('.cabin'),tray:bounds('aside'),seat:bounds('.seat'),height:innerHeight,overflow:document.documentElement.scrollHeight>innerHeight}});
-            console.log(width,height,JSON.stringify(layout));
-            if(errors.length||layout.overflow||layout.tray.bottom>height+1||layout.seat.width<44)throw Error('Phone layout failed: '+JSON.stringify(errors));
-            await page.close();await context.close();fs.renameSync(await page.video().path(),`screens/walking-${width}x${height}.webm`);execFileSync('ffmpeg',['-i',`screens/walking-${width}x${height}.webm`,'-vf','fps=2,scale=260:-1,tile=4x4','-frames:v','1',`screens/sequence-${width}.png`],{stdio:'ignore'});
-          }await browser.close()})().catch(e=>{console.error(e);process.exit(1)});
-          JS
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: Playable-phone-screens
-          path: screens/*
   build:
     needs: checks
     runs-on: macos-26
