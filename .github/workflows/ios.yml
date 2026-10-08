@@ -47,6 +47,8 @@ jobs:
             await page.goto('http://127.0.0.1:8765');await page.getByRole('button',{name:'Play',exact:true}).click();
             await page.getByRole('button',{name:'Pause and save flight'}).click();
             await page.getByRole('button',{name:'Resume flight',exact:true}).click();
+            await page.getByRole('button',{name:'Stock up on water',exact:true}).click();
+            await page.waitForFunction(()=>document.querySelector('[data-drink="water"]').getAttribute('aria-label').includes('1 on tray'));
             await page.screenshot({path:`screens/game-${width}x${height}.png`});
             const layout=await page.evaluate(()=>{const bounds=s=>{const r=document.querySelector(s).getBoundingClientRect();return {top:r.top,bottom:r.bottom,width:r.width,height:r.height}};return {cabin:bounds('.cabin'),tray:bounds('aside'),seat:bounds('.seat'),height:innerHeight,overflow:document.documentElement.scrollHeight>innerHeight}});
             console.log(width,height,JSON.stringify(layout));
