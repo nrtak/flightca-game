@@ -18,8 +18,10 @@ function updateCrewSprite(dx=0,dy=0,now=0){
  if(!sprite)return;
  const action=crewAction==='serve'?'serve':!crew.classList.contains('walking')&&Object.values(inventory).some(n=>n>0)?'carry':'walk';
  sprite.classList.toggle('service-pose',action!=='walk');
+ sprite.setAttribute('data-avatar',String(attendantChoice));
  if(action==='walk')sprite.style.backgroundPosition=(column*100/3)+'% '+((attendantChoice*2+phase)*100/3)+'%';
  else sprite.style.backgroundPosition=(action==='serve'?100:0)+'% '+(attendantChoice*100)+'%';
+ if(attendantChoice===1)sprite.style.backgroundPosition='center';
  const carried=crew.querySelector('.crew-cargo');
  if(carried){carried.textContent=Object.keys(inventory).filter(k=>inventory[k]>0).slice(0,2).map(k=>icons[k]).join('');carried.hidden=action==='walk'||!carried.textContent}
 }
@@ -46,6 +48,6 @@ seats.forEach((s,index)=>{
 const attendantPicker=document.createElement('div');attendantPicker.className='avatar-picker';attendantPicker.setAttribute('role','group');attendantPicker.setAttribute('aria-label','Choose your avatar');
 const avatarButtons=[];
 function selectAttendant(value){attendantChoice=Number(value);attendantPicker.value=String(attendantChoice);avatarButtons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===attendantChoice)));updateCrewSprite()}
-for(let i=0;i<2;i++){const button=document.createElement('button');button.className='avatar-option';button.setAttribute('aria-label','Avatar '+(i+1));const portrait=document.createElement('span');portrait.className='avatar-preview';portrait.style.backgroundPosition='0% '+(i*100)+'%';button.appendChild(portrait);button.onclick=()=>selectAttendant(i);avatarButtons.push(button);attendantPicker.appendChild(button)}
+for(let i=0;i<2;i++){const button=document.createElement('button');button.className='avatar-option';button.setAttribute('aria-label','Avatar '+(i+1));const portrait=document.createElement('span');portrait.className='avatar-preview';portrait.style.backgroundPosition='0% '+(i*100)+'%';portrait.setAttribute('data-avatar',String(i));button.appendChild(portrait);button.onclick=()=>selectAttendant(i);avatarButtons.push(button);attendantPicker.appendChild(button)}
 picker.before(attendantPicker);selectAttendant(attendantChoice);
 updateCrewSprite();refreshPassengerSprites();

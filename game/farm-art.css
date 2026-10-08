@@ -32,3 +32,15 @@ aside.panel,.stat{background:#fffaf0;border-color:#ded5c8;border-radius:22px;col
 .avatar-option[aria-pressed=true]{border-color:#40c8a4;background:#effcf5}
 .avatar-preview{display:block;width:76px;height:114px;background-image:url('assets/attendants-service-farm-v1.png');background-size:200% 200%;background-repeat:no-repeat}
 .welcome .primary{background:#3e7dbd;border-radius:14px;font-size:18px}
+
+/* Transparent production sprites derived from the approved cabin design. */
+.seat{height:auto;min-height:76px;aspect-ratio:3/4;background:transparent;border:0;box-shadow:none;border-radius:10px;overflow:visible}
+.seat:before,.seat:after{display:none}
+.seat-avatar{width:100%;height:100%;left:0;top:0;transform:none;background-image:url('assets/passengers-approved-v2.png');background-size:400% 200%;background-repeat:no-repeat}
+.passenger-portrait{background-image:url('assets/passengers-approved-v2.png');background-size:400% 200%;height:96px;flex-basis:72px;width:72px;background-color:transparent;border:0}
+.crew-sprite[data-avatar="1"],.crew-sprite.service-pose[data-avatar="1"]{width:48px;height:96px;left:-7px;top:-44px;background-image:url('assets/attendant-approved-v2.png');background-size:contain;background-position:center;background-repeat:no-repeat}
+.avatar-preview[data-avatar="1"]{background-image:url('assets/attendant-approved-v2.png');background-size:contain;background-position:center!important}
+.crew-sprite[data-avatar="1"]~.crew-cargo{display:none}
+.rows{row-gap:20px}
+.seat small{display:block;left:2px;right:auto;top:auto;bottom:1px;background:#fffaf0e8;border-radius:4px;padding:1px 3px;font-size:8px}
+@media(max-width:380px){.seat-avatar{width:100%;height:100%}.rows{column-gap:4px;row-gap:18px}.cabin{padding-left:12px;padding-right:12px}}
