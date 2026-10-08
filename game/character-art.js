@@ -21,7 +21,13 @@ function updateCrewSprite(dx=0,dy=0,now=0){
  sprite.setAttribute('data-avatar',String(attendantChoice));
  if(action==='walk')sprite.style.backgroundPosition=(column*100/3)+'% '+((attendantChoice*2+phase)*100/3)+'%';
  else sprite.style.backgroundPosition=(action==='serve'?100:0)+'% '+(attendantChoice*100)+'%';
- if(attendantChoice===1)sprite.style.backgroundPosition='center';
+ if(attendantChoice===1){
+  const loaded=Object.values(inventory).some(n=>n>0);
+  const moving=crew.classList.contains('walking');
+  const row=(loaded?2:0)+(moving?phase:1);
+  sprite.style.backgroundPosition=(column*100/3)+'% '+(row*100/3)+'%';
+  sprite.setAttribute('data-motion',moving?'walking':crewAction==='serve'?'serving':'idle');
+ }
  const carried=crew.querySelector('.crew-cargo');
  if(carried){carried.textContent=Object.keys(inventory).filter(k=>inventory[k]>0).slice(0,2).map(k=>icons[k]).join('');carried.hidden=action==='walk'||!carried.textContent}
 }
