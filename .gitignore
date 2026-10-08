@@ -1,0 +1,16 @@
+build/
+ios/Web/
+ios/Assets.xcassets/
+ios/*.xcodeproj/
+.DS_Store
+*.p12
+*.p8
+*.mobileprovision
+*.ipa
+__pycache__/
+*.md
+game/tests/
+game/assets/*.txt
+ci/test-*.cjs
+branding/*
+!branding/AppIcon.png

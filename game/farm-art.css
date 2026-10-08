@@ -1,0 +1,15 @@
+/* Regular atlas cells remain intact; CSS selects each transparent tile. */
+.crew-sprite{background-image:url('assets/attendants-walk-farm-v1.png');background-size:400% 400%;width:48px;height:49px;left:-7px;top:-13px}
+.crew-sprite.service-pose{background-image:url('assets/attendants-service-farm-v1.png');background-size:200% 200%;width:32px;height:48px;left:1px;top:-12px}
+.crew-cargo{position:absolute;left:7px;top:8px;font-size:7px;line-height:9px;pointer-events:none;white-space:nowrap}
+.seat{height:68px;min-height:68px;background:linear-gradient(#91b7ce 0 65%,#a9cbdc 65%);border-radius:9px 9px 6px 6px;isolation:auto;overflow:visible}
+.seat:before,.seat:after{display:block;z-index:0;top:40%;bottom:12%;width:3px;border:0;background:#9aaab2}
+.seat:before{left:1px}.seat:after{right:1px}
+.seat-avatar{background-image:url('assets/passengers-seated-farm-v1.png');background-size:400% 200%;width:48px;height:64px;top:1px;left:50%;transform:translateX(-50%);z-index:1}
+.seat small{bottom:auto;top:1px;left:auto;right:2px;font-size:8px;color:#3b6171;z-index:2}
+.family-badge{top:1px;left:1px;z-index:2;font-size:6px}
+.passenger-portrait{background-image:url('assets/passengers-seated-farm-v1.png');background-size:400% 200%;width:48px;height:64px;flex:0 0 48px;background-color:transparent;border:0;border-radius:0}
+.seat[data-mood='mad'],.seat[data-mood='very-mad']{border-color:#d5806d}
+.seat[data-mood='happy'],.seat[data-mood='very-happy']{border-color:#65a38a}
+.seat[data-mood='very-happy']:not(.family-seat){outline:1px solid #8bc3a6;outline-offset:1px}
+.seat:active{filter:brightness(1.08)}

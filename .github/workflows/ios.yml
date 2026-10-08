@@ -1,0 +1,70 @@
+name: iOS build and TestFlight
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      signed:
+        description: Build a signed iPhone archive
+        type: boolean
+        default: false
+      upload:
+        description: Upload signed build to TestFlight (requires signed)
+        type: boolean
+        default: false
+      version:
+        description: App version
+        default: '0.1.0'
+      build_number:
+        description: Unique build number (blank uses workflow run number)
+        required: false
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: |
+          for script in game/*.js; do node --check "$script"; done
+          python3 ci/prepare_ios.py
+  build:
+    needs: checks
+    runs-on: macos-26
+    environment: ios
+    env:
+      SIGNED: ${{ inputs.signed || false }}
+      UPLOAD: ${{ inputs.upload || false }}
+      APP_VERSION: ${{ inputs.version || '0.1.0' }}
+      BUILD_NUMBER: ${{ inputs.build_number || github.run_number }}
+      IOS_BUNDLE_ID: ${{ vars.IOS_BUNDLE_ID }}
+      APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: python3 ci/prepare_ios.py
+      - name: Build app
+        env:
+          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_PROFILE_BASE64: ${{ secrets.IOS_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: python3 ci/build_ios.py
+      - name: Upload to App Store Connect
+        if: inputs.upload && inputs.signed
+        env:
+          ASC_PRIVATE_KEY_BASE64: ${{ secrets.ASC_PRIVATE_KEY_BASE64 }}
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: python3 ci/upload_testflight.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CabinCrew-iOS-${{ github.run_number }}
+          path: |
+            build/*.zip
+            build/ipa/*.ipa
+          if-no-files-found: error
