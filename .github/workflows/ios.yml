@@ -34,6 +34,8 @@ jobs:
           python3 ci/prepare_ios.py
       - name: Capture playable phone screens
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
           npm install --prefix /tmp/sky-render playwright
           /tmp/sky-render/node_modules/.bin/playwright install --with-deps chromium
           python3 -m http.server 8765 --directory game >/tmp/sky-server.log 2>&1 &
