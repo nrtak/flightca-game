@@ -1,12 +1,12 @@
-// Front-facing seated atlas: 4 columns, 2 rows (six adults, two children).
+// Front-facing seated atlas: 4 columns, 4 rows, one identity per visible seat.
 // Walking atlas: four directions, two frames for each attendant.
 const characterMoods=['neutral','happy','very-happy','sad','mad','very-mad'];
 const passengerNames=['Alex','Marion','Lena','Noah','Isaac','Sam'];
 let attendantChoice=1,crewDirection='down',crewAction='idle';
-function passengerIdentity(index){return index===5?6:index===15?7:index===4?3:index===14?2:index%6}
+function passengerIdentity(index){return index%16}
 function setPassengerPortrait(element,identity,mood='neutral'){
- element.style.backgroundPosition=(identity%4*100/3)+'% '+(Math.floor(identity/4)*100)+'%';
- element.setAttribute('aria-label',(identity>=6?'Child':'Passenger')+', '+mood.replaceAll('-',' '));
+ element.style.backgroundPosition=(identity%4*100/3)+'% '+(Math.floor(identity/4)*100/3)+'%';
+ element.setAttribute('aria-label',((identity===5||identity===15)?'Child':'Passenger')+', '+mood.replaceAll('-',' '));
  element.setAttribute('data-mood',mood);
 }
 function updateCrewSprite(dx=0,dy=0,now=0){
