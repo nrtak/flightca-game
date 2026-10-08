@@ -43,8 +43,9 @@ seats.forEach((s,index)=>{
  const label=s.button.querySelector('small');s.button.replaceChildren();
  const avatar=document.createElement('span');avatar.className='seat-avatar';s.button.append(avatar,label);if(familyService.groupFor(index)>=0){s.button.classList.add('family-seat');const badge=document.createElement('span');badge.className='family-badge';badge.textContent=familyService.role(index)==='Child'?'Child':'Parent';s.button.appendChild(badge)}
 });
-const attendantPicker=document.createElement('select');attendantPicker.className='route-picker';attendantPicker.setAttribute('aria-label','Choose your flight attendant');
-attendantPicker.innerHTML='<option value="1">Female attendant</option><option value="0">Male attendant</option>';
-attendantPicker.onchange=()=>{attendantChoice=Number(attendantPicker.value);updateCrewSprite()};
-picker.before(attendantPicker);
+const attendantPicker=document.createElement('div');attendantPicker.className='avatar-picker';attendantPicker.setAttribute('role','group');attendantPicker.setAttribute('aria-label','Choose your avatar');
+const avatarButtons=[];
+function selectAttendant(value){attendantChoice=Number(value);attendantPicker.value=String(attendantChoice);avatarButtons.forEach((button,i)=>button.setAttribute('aria-pressed',String(i===attendantChoice)));updateCrewSprite()}
+for(let i=0;i<2;i++){const button=document.createElement('button');button.className='avatar-option';button.setAttribute('aria-label','Avatar '+(i+1));const portrait=document.createElement('span');portrait.className='avatar-preview';portrait.style.backgroundPosition='0% '+(i*100)+'%';button.appendChild(portrait);button.onclick=()=>selectAttendant(i);avatarButtons.push(button);attendantPicker.appendChild(button)}
+picker.before(attendantPicker);selectAttendant(attendantChoice);
 updateCrewSprite();refreshPassengerSprites();

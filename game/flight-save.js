@@ -52,7 +52,7 @@ try{
  if(validFlight(saved)){
   routeIndex=saved.routeIndex;inventory={...saved.inventory};score=saved.score;served=saved.served;missed=saved.missed;remaining=saved.remaining;ticks=saved.ticks;selected=saved.selected;attendantChoice=saved.attendantChoice;orders=[...saved.orders];atGalley=saved.atGalley;
   seats.forEach((seat,i)=>Object.assign(seat,saved.seats[i]));familyService.restore(saved.familyState,seats);setCabinRows(saved.cabinRows??5);
-  attendantPicker.value=String(attendantChoice);showCareer();
+  if(typeof selectAttendant==='function')selectAttendant(attendantChoice);showCareer();
   document.querySelector('.welcome-card p').textContent=routes[routeIndex].from+' → '+routes[routeIndex].to;
   crew.style.left=(cabin.clientWidth/2-17)+'px';crew.style.top='36px';
   // Return the attendant to the aisle; prepared tray items are kept.

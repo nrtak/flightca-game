@@ -13,3 +13,22 @@
 .seat[data-mood='happy'],.seat[data-mood='very-happy']{border-color:#65a38a}
 .seat[data-mood='very-happy']:not(.family-seat){outline:1px solid #8bc3a6;outline-offset:1px}
 .seat:active{filter:brightness(1.08)}
+
+/* Layout follows the approved four-row cabin draft. */
+body,main{background:#f3e9d9}
+.cabin{background:linear-gradient(90deg,#eee1c9,#fff5dc 45%,#eee1c9);border-color:#d5c4ae;box-shadow:0 3px 8px #947b5b30}
+.seat{background:linear-gradient(#347dca 0 60%,#2267b4 61% 78%,#4d91d6 79%);border:1px solid #22538b;box-shadow:0 3px 0 #a6a7a1}
+.seat:before,.seat:after{background:linear-gradient(90deg,#aeb8bd,#e0e5e8);border:1px solid #818f99}
+aside.panel,.stat{background:#fffaf0;border-color:#ded5c8;border-radius:22px;color:#155998}
+.drinks button{background:#fffaf0;border-color:#ded5c8;border-radius:14px}
+.drinks button.selected{border-color:#40c8a4;background:#f3fff8}
+.galley{background:#3e7dbd;color:white;border-color:#96b7ce;border-radius:10px}
+.plane-window{background:linear-gradient(#82c9f8,#eaf9ff);border-color:#c3bba9}
+.family-badge{display:none}.family-seat{outline-color:#40c8a4}
+.welcome{background:#f3e9d9f5}.welcome-card{border:0;box-shadow:none;background:transparent;width:300px;padding:18px}
+.welcome .route-hint,.welcome .career{display:none}.welcome .flight-summary:empty{display:none}
+.avatar-picker{display:flex;justify-content:center;gap:18px;margin:22px 0}
+.avatar-option{width:100px;height:136px;border:3px solid #d8cbbb;border-radius:20px;background:#fffaf0;padding:8px;touch-action:manipulation}
+.avatar-option[aria-pressed=true]{border-color:#40c8a4;background:#effcf5}
+.avatar-preview{display:block;width:76px;height:114px;background-image:url('assets/attendants-service-farm-v1.png');background-size:200% 200%;background-repeat:no-repeat}
+.welcome .primary{background:#3e7dbd;border-radius:14px;font-size:18px}
