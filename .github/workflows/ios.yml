@@ -39,7 +39,7 @@ jobs:
           python3 -m http.server 8765 --directory game >/tmp/sky-server.log 2>&1 &
           node <<'JS'
           const {chromium}=require('/tmp/sky-render/node_modules/playwright');
-          const fs=require('fs');
+          const fs=require('fs');const {execFileSync}=require('child_process');
           (async()=>{const browser=await chromium.launch();fs.mkdirSync('screens',{recursive:true});
           for(const [width,height] of [[390,844],[375,667],[430,932]]){
             const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:1,recordVideo:{dir:'screens',size:{width,height}}});const page=await context.newPage();
@@ -58,7 +58,7 @@ jobs:
             const layout=await page.evaluate(()=>{const bounds=s=>{const r=document.querySelector(s).getBoundingClientRect();return {top:r.top,bottom:r.bottom,width:r.width,height:r.height}};return {cabin:bounds('.cabin'),tray:bounds('aside'),seat:bounds('.seat'),height:innerHeight,overflow:document.documentElement.scrollHeight>innerHeight}});
             console.log(width,height,JSON.stringify(layout));
             if(errors.length||layout.overflow||layout.tray.bottom>height+1||layout.seat.width<44)throw Error('Phone layout failed: '+JSON.stringify(errors));
-            await page.close();await context.close();fs.renameSync(await page.video().path(),`screens/walking-${width}x${height}.webm`);
+            await page.close();await context.close();fs.renameSync(await page.video().path(),`screens/walking-${width}x${height}.webm`);execFileSync('ffmpeg',['-i',`screens/walking-${width}x${height}.webm`,'-vf','fps=2,scale=260:-1,tile=4x4','-frames:v','1',`screens/sequence-${width}.png`],{stdio:'ignore'});
           }await browser.close()})().catch(e=>{console.error(e);process.exit(1)});
           JS
       - uses: actions/upload-artifact@v4
