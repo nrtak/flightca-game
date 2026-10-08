@@ -31,3 +31,10 @@ aside.panel{flex:0 0 144px;position:relative;width:calc(100% - 12px);height:144p
 .galley{top:12px;min-height:40px;width:124px;padding:6px;font-size:14px;background:#5b88b9;border:2px solid #f4f5ec;border-radius:9px;box-shadow:0 2px 3px #50677530;z-index:4}
 .rows{position:relative;z-index:1}
 @media(max-height:700px){.cabin{--front-height:76px}.galley{top:8px;height:36px;min-height:36px}}
+
+/* Full standing height relative to the seated passenger sprites. */
+.crew-sprite[data-avatar="1"],.crew-sprite.service-pose[data-avatar="1"]{width:62px;height:124px;left:-14px;top:-34px}
+.crew-sprite[data-avatar="0"]{width:62px;height:64px;left:-14px;top:-16px}
+.crew-sprite.service-pose[data-avatar="0"]{width:52px;height:78px;left:-9px;top:-22px}
+.galley{white-space:nowrap}
+@media(max-height:700px){.crew-sprite[data-avatar="1"],.crew-sprite.service-pose[data-avatar="1"]{width:56px;height:112px;left:-11px;top:-30px}}
