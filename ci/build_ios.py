@@ -1,6 +1,6 @@
 """Build on a macOS runner; signing material exists only for this process."""
 from pathlib import Path
-import base64, datetime, json, os, plistlib, re, shutil, subprocess, tempfile
+import base64, datetime, json, os, plistlib, re, shutil, subprocess, tempfile, zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 def run(*args, capture=False):
@@ -68,6 +68,14 @@ def main():
             export = temp / 'ExportOptions.plist'
             export.write_bytes(plistlib.dumps(options))
             run('xcodebuild','-exportArchive','-archivePath','build/CabinCrew.xcarchive','-exportPath','build/ipa','-exportOptionsPlist',str(export))
+            ipas = list((output / 'ipa').glob('*.ipa'))
+            if len(ipas) != 1: raise ValueError('Expected one exported iPhone app.')
+            with zipfile.ZipFile(ipas[0]) as package:
+                plist_paths = [name for name in package.namelist() if re.fullmatch(r'Payload/[^/]+\.app/Info\.plist', name)]
+                if len(plist_paths) != 1: raise ValueError('Expected one main app property list.')
+                app = plistlib.loads(package.read(plist_paths[0]))
+                if app.get('UIDeviceFamily') != [1]: raise ValueError('Exported game must target iPhone only.')
+                if app.get('CFBundleIdentifier') != bundle: raise ValueError('Exported app ID mismatch.')
         finally:
             subprocess.run(['security','list-keychains','-d','user','-s',*previous],check=False)
             subprocess.run(['security','delete-keychain',str(keychain)],check=False)
