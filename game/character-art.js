@@ -51,7 +51,7 @@ function refreshPassengerSprites(){
 crew.replaceChildren();const crewSprite=document.createElement('span');crewSprite.className='crew-sprite';crew.appendChild(crewSprite);const cargo=document.createElement('span');cargo.className='crew-cargo';cargo.hidden=true;crew.appendChild(cargo);crew.setAttribute('aria-label','Flight attendant');
 seats.forEach((s,index)=>{
  const label=s.button.querySelector('small');s.button.replaceChildren();
- const avatar=document.createElement('span');avatar.className='seat-avatar';s.button.append(avatar,label);if(familyService.groupFor(index)>=0){s.button.classList.add('family-seat');const badge=document.createElement('span');badge.className='family-badge';badge.textContent=familyService.role(index)==='Child'?'Child':'Parent';s.button.appendChild(badge)}
+ const avatar=document.createElement('span');avatar.className='seat-avatar';s.button.append(avatar,label);if(familyService.groupFor(index)>=0){s.button.classList.add('family-seat');const badge=document.createElement('span');badge.className='family-badge';badge.textContent='Family';badge.setAttribute('aria-hidden','true');s.button.appendChild(badge)}
 });
 const attendantPicker=document.createElement('div');attendantPicker.className='avatar-picker';attendantPicker.setAttribute('role','group');attendantPicker.setAttribute('aria-label','Choose your avatar');
 const avatarButtons=[];

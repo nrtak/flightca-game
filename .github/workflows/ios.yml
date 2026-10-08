@@ -32,6 +32,33 @@ jobs:
       - run: |
           for script in game/*.js; do node --check "$script"; done
           python3 ci/prepare_ios.py
+      - name: Capture playable phone screens
+        run: |
+          npm install --prefix /tmp/sky-render playwright
+          /tmp/sky-render/node_modules/.bin/playwright install --with-deps chromium
+          python3 -m http.server 8765 --directory game >/tmp/sky-server.log 2>&1 &
+          node <<'JS'
+          const {chromium}=require('/tmp/sky-render/node_modules/playwright');
+          const fs=require('fs');
+          (async()=>{const browser=await chromium.launch();fs.mkdirSync('screens',{recursive:true});
+          for(const [width,height] of [[390,844],[375,667],[430,932]]){
+            const page=await browser.newPage({viewport:{width,height},deviceScaleFactor:2});
+            const errors=[];page.on('pageerror',e=>errors.push(e.message));
+            await page.goto('http://127.0.0.1:8765');await page.getByRole('button',{name:'Play',exact:true}).click();
+            await page.getByRole('button',{name:'Pause and save flight'}).click();
+            await page.getByRole('button',{name:'Resume flight',exact:true}).click();
+            await page.screenshot({path:`screens/game-${width}x${height}.png`});
+            const layout=await page.evaluate(()=>{const bounds=s=>{const r=document.querySelector(s).getBoundingClientRect();return {top:r.top,bottom:r.bottom,width:r.width,height:r.height}};return {cabin:bounds('.cabin'),tray:bounds('aside'),seat:bounds('.seat'),height:innerHeight,overflow:document.documentElement.scrollHeight>innerHeight}});
+            console.log(width,height,JSON.stringify(layout));
+            if(errors.length||layout.overflow||layout.tray.bottom>height+1||layout.seat.width<44)throw Error('Phone layout failed: '+JSON.stringify(errors));
+            await page.close();
+          }await browser.close()})().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Playable-phone-screens
+          path: screens/*.png
   build:
     needs: checks
     runs-on: macos-26
