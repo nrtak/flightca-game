@@ -54,7 +54,7 @@ try{
   seats.forEach((seat,i)=>Object.assign(seat,saved.seats[i]));familyService.restore(saved.familyState,seats);setCabinRows(saved.cabinRows??5);
   if(typeof selectAttendant==='function')selectAttendant(attendantChoice);showCareer();
   document.querySelector('.welcome-card p').textContent=routes[routeIndex].from+' → '+routes[routeIndex].to;
-  crew.style.left=(cabin.clientWidth/2-17)+'px';crew.style.top='92px';
+  crew.style.left=(cabin.clientWidth/2-17)+'px';crew.style.top='114px';
   // Return the attendant to the aisle; prepared tray items are kept.
   atGalley=false;pausedFlight=true;document.body.classList.add('playing');updateCrewSprite();updateTray();render();
   showPause('Saved flight: '+routes[routeIndex].from+' → '+routes[routeIndex].to+'. Resume with your tray and orders intact.');

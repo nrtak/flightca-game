@@ -55,3 +55,8 @@ aside.panel{flex:0 0 144px;position:relative;width:calc(100% - 12px);height:144p
 .galley.service-needed{box-shadow:0 0 0 3px #efbf5c,0 0 12px #efbf5c88}.drinks button.item-needed{border-color:#d5a345;background:#fff3ce}.drinks button.item-needed:before{content:'+';position:absolute;top:0;right:2px;font-size:13px;color:#845d17}
 .crew-sprite[data-avatar="1"].standing,.crew-sprite.service-pose[data-avatar="1"].standing{background-image:url('assets/attendant-idle-v1.png');background-size:400% 200%}
 .avatar-preview[data-avatar="1"]{background-image:url('assets/attendant-idle-v1.png');background-size:400% 200%;background-position:0% 0%!important}
+
+.galley{top:6px;width:176px;height:66px;min-height:66px;padding:4px 6px;background:linear-gradient(#638fb8 0 35%,#d7e6ec 36%);border:2px solid #fff9e9;border-radius:10px;color:white;white-space:nowrap}
+.galley-title{display:block;font-size:13px;font-weight:750;line-height:20px}.galley-supplies{display:flex;justify-content:center;align-items:center;gap:0;height:34px;background:#e9f1f2;border:1px solid #91aab9;border-radius:5px;margin-top:2px}
+.galley-supplies .item-art{width:26px;height:30px;flex:0 0 26px}
+@media(max-height:700px){.galley{top:4px;height:62px;min-height:62px}.galley-title{font-size:12px}.galley-supplies{height:30px}.galley-supplies .item-art{height:27px}}
