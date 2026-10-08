@@ -44,3 +44,5 @@ aside.panel{flex:0 0 144px;position:relative;width:calc(100% - 12px);height:144p
 @media(max-height:700px){.crew-sprite[data-avatar="1"],.crew-sprite.service-pose[data-avatar="1"]{width:74px;height:111px;left:-20px;top:-30px}}
 
 .seat-avatar{background-image:url('assets/passengers-varied-v3.png');background-size:400% 400%}
+
+.seat-avatar[data-portrait-row="1"]{clip-path:inset(2% 0 0)}

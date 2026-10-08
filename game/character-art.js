@@ -8,6 +8,7 @@ function setPassengerPortrait(element,identity,mood='neutral'){
  element.style.backgroundPosition=(identity%4*100/3)+'% '+(Math.floor(identity/4)*100/3)+'%';
  element.setAttribute('aria-label',((identity===5||identity===15)?'Child':'Passenger')+', '+mood.replaceAll('-',' '));
  element.setAttribute('data-mood',mood);
+ element.setAttribute('data-portrait-row',String(Math.floor(identity/4)));
 }
 function updateCrewSprite(dx=0,dy=0,now=0){
  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>1)crewDirection=dx<0?'left':'right';
