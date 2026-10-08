@@ -24,3 +24,10 @@ aside.panel{flex:0 0 144px;position:relative;width:calc(100% - 12px);height:144p
 .passenger-dialogue .passenger-portrait{display:none}.passenger-dialogue strong{font-size:11px}.passenger-dialogue p{font-size:12px;margin:1px 0;line-height:1.25}
 @media(max-height:700px){section.panel{padding-top:86px}.cabin{padding-top:52px}.rows{row-gap:2px}.galley{min-height:38px;height:38px}.order-queue{height:30px}.order-chip{min-height:28px}aside.panel{flex-basis:128px;height:128px}.drinks button{height:44px;font-size:21px}#message{top:76px;font-size:11px}.passenger-dialogue{height:44px}}
 .stats .stat{display:block}.stats .stat:nth-child(4){display:none}
+
+/* Illustrated scenery stays behind the interactive seats and aisle. */
+.cabin{--front-height:clamp(82px,13dvh,112px);background-image:url('assets/cabin-scenery-v1.png');background-size:100% 100%;background-repeat:no-repeat;border:0;border-radius:16px;padding:var(--front-height) 14px 8px;box-shadow:inset 0 0 0 1px #cfbea466}
+.plane-window{display:none}
+.galley{top:12px;min-height:40px;width:124px;padding:6px;font-size:14px;background:#5b88b9;border:2px solid #f4f5ec;border-radius:9px;box-shadow:0 2px 3px #50677530;z-index:4}
+.rows{position:relative;z-index:1}
+@media(max-height:700px){.cabin{--front-height:76px}.galley{top:8px;height:36px;min-height:36px}}
