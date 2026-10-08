@@ -25,8 +25,9 @@ function updateCrewSprite(dx=0,dy=0,now=0){
  if(attendantChoice===1){
   const loaded=Object.values(inventory).some(n=>n>0);
   const moving=crew.classList.contains('walking');
-  const row=(loaded?2:0)+(moving?phase:1);
-  sprite.style.backgroundPosition=(column*100/3)+'% '+(row*100/3)+'%';
+  const row=moving?(loaded?2:0)+phase:(loaded?1:0);
+  sprite.classList.toggle('standing',!moving);
+  sprite.style.backgroundPosition=(column*100/3)+'% '+(moving?row*100/3:row*100)+'%';
   sprite.setAttribute('data-motion',moving?'walking':crewAction==='serve'?'serving':'idle');
  }
  const carried=crew.querySelector('.crew-cargo');

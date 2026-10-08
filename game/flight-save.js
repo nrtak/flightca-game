@@ -24,7 +24,7 @@ function validFlight(s){
  return s&&s.version===1&&Array.isArray(s.seats)&&(s.cabinRows===undefined||s.cabinRows===4||s.cabinRows===5)&&(s.cabinRows!==4||s.seats?.slice(16).every(p=>!p.request&&!p.queued))&&integer(s.routeIndex,0,2)&&integer(s.remaining,1,120)&&integer(s.ticks,0,120)&&s.ticks+s.remaining===120&&
  ['score','served','missed'].every(k=>integer(s[k],0,100000))&&Object.hasOwn(icons,s.selected)&&integer(s.attendantChoice,0,1)&&typeof s.atGalley==='boolean'&&
  s.inventory&&Object.keys(s.inventory).length===6&&Object.keys(icons).every(k=>integer(s.inventory[k],0,6))&&Object.values(s.inventory).reduce((a,b)=>a+b,0)<=6&&
- Array.isArray(s.seats)&&s.seats.length===seats.length&&s.seats.every(p=>p&&(p.request===null||Object.hasOwn(icons,p.request))&&integer(p.patience,0,30)&&(!p.request||p.patience>0)&&typeof p.queued==='boolean')&&
+ Array.isArray(s.seats)&&s.seats.length===seats.length&&s.seats.every(p=>p&&(p.request===null||Object.hasOwn(icons,p.request))&&integer(p.patience,0,45)&&(!p.request||p.patience>0)&&typeof p.queued==='boolean')&&
  Array.isArray(s.orders)&&s.orders.length<=6&&new Set(s.orders).size===s.orders.length&&s.orders.every(i=>integer(i,0,seats.length-1)&&s.seats[i].queued&&s.seats[i].request)&&s.seats.every((p,i)=>!p.queued||s.orders.includes(i))&&(s.familyState===undefined||familyService.valid(s.familyState,s.seats));
 }
 function showPause(message){pauseScreen.hidden=false;$('pause-status').textContent=message;$('resume-flight').focus()}

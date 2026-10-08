@@ -10,5 +10,5 @@ function setCabinRows(value){
 }
 
 setCabinRows(cabinRows);
-function activeRequestLimit(){return ticks<30?3:ticks<75?4:5}
+function activeRequestLimit(){return firstFlight()?(ticks<45?2:3):ticks<30?3:ticks<75?4:5}
 function requestMembers(index){const n=familyService.groupFor(index);return n<0?[index]:familyService.groups[n].seats}

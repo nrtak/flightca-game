@@ -4,7 +4,7 @@ passengerDialogue.setAttribute('role','status');passengerDialogue.setAttribute('
 document.querySelector('main').appendChild(passengerDialogue);
 let passengerDialogueTimer;
 const expressions={neutral:'😐',happy:'🙂','very-happy':'😄',sad:'😟',mad:'😠','very-mad':'😤'};
-function passengerMood(s){if(!s.request)return 'neutral';const ratio=s.patience/routes[routeIndex].patience;return ratio>.65?'neutral':ratio>.4?'sad':ratio>.2?'mad':'very-mad'}
+function passengerMood(s){if(!s.request)return 'neutral';const ratio=s.patience/requestPatience();return ratio>.65?'neutral':ratio>.4?'sad':ratio>.2?'mad':'very-mad'}
 function speakPassenger(s,text,mood=passengerMood(s)){
  passengerDialogue.replaceChildren();
  const portrait=document.createElement('div');portrait.className='passenger-portrait';

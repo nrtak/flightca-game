@@ -46,3 +46,12 @@ aside.panel{flex:0 0 144px;position:relative;width:calc(100% - 12px);height:144p
 .seat-avatar{background-image:url('assets/passengers-varied-v3.png');background-size:400% 400%}
 
 .seat-avatar[data-portrait-row="1"]{clip-path:inset(2% 0 0)}
+
+.item-art{display:inline-block;width:32px;height:32px;background-image:url('assets/service-items-v1.png');background-size:300% 200%;background-repeat:no-repeat;vertical-align:middle;pointer-events:none}
+.item-water{background-position:0% 0%}.item-coffee{background-position:50% 0%}.item-soda{background-position:100% 0%}.item-pretzels{background-position:0% 100%}.item-cookies{background-position:50% 100%}.item-snackbox{background-position:100% 100%}
+.request{left:auto;right:-2px;top:0;transform:none;width:23px;height:25px;min-width:0;padding:1px;border-width:1px;border-radius:9px;background:#fffdf8;box-shadow:0 1px 3px #365a7430}
+.request .item-art{width:20px;height:21px}.order-chip .item-art{width:24px;height:24px}
+.seat.service-ready{box-shadow:0 0 0 3px #3cc6a4;border-radius:12px}.seat.service-ready:after{content:'✓';position:absolute;right:0;bottom:0;background:#23846f;color:white;font-size:12px;border-radius:50%;width:18px;height:18px;line-height:18px;pointer-events:none}
+.galley.service-needed{box-shadow:0 0 0 3px #efbf5c,0 0 12px #efbf5c88}.drinks button.item-needed{border-color:#d5a345;background:#fff3ce}.drinks button.item-needed:before{content:'+';position:absolute;top:0;right:2px;font-size:13px;color:#845d17}
+.crew-sprite[data-avatar="1"].standing,.crew-sprite.service-pose[data-avatar="1"].standing{background-image:url('assets/attendant-idle-v1.png');background-size:400% 200%}
+.avatar-preview[data-avatar="1"]{background-image:url('assets/attendant-idle-v1.png');background-size:400% 200%;background-position:0% 0%!important}

@@ -9,7 +9,7 @@ class FamilyService {
   const n=this.groupFor(index),pick=list=>list[Math.floor(random()*list.length)];
   const members=n<0?[index]:this.groups[n].seats;
   if(n>=0){if(this.cycles[n].active||members.some(i=>seats[i].request))return false;this.cycles[n]={active:true,resolved:[],failed:false}}
-  members.forEach(i=>{seats[i].request=pick(this.role(i)==='Child'?['water','soda','pretzels','cookies']:items);seats[i].patience=n<0?patience:30;seats[i].queued=false});return true;
+  members.forEach(i=>{seats[i].request=pick(this.role(i)==='Child'?['water','soda','pretzels','cookies']:items);seats[i].patience=n<0?patience:Math.max(30,patience);seats[i].queued=false});return true;
  }
  collect(index,seats,orders,capacity=6){
   const n=this.groupFor(index),members=n<0?[index]:this.groups[n].seats;
