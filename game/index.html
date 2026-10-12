@@ -9,7 +9,7 @@ const icons={water:'💧',coffee:'☕',soda:'🥤',pretzels:'🥨',cookies:'🍪
 function itemMarkup(item){return '<i class="item-art item-'+item+'" aria-hidden="true"></i>'}
 function firstFlight(){return routeIndex===0&&career.flights===0}
 function learningService(){return firstFlight()&&served===0&&ticks===0}
-function galleyStop(){return Math.max(54,$("galley").offsetTop+$("galley").offsetHeight+8)}
+function galleyStop(){return Math.max(54,$("galley").offsetTop+$("galley").offsetHeight+64)}
 function requestPatience(){return firstFlight()?45:routes[routeIndex].patience}
 function requestInterval(){return firstFlight()?10:routes[routeIndex].interval}
 function updateServiceGuidance(){
