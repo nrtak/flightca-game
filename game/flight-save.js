@@ -33,7 +33,7 @@ function pauseFlight(){
  clearInterval(timer);running=false;pausedFlight=true;flightId++;
  preparing=false;stopWalking();clearPassengerDialogue();
  const saved=saveFlight();
- showPause(saved?'Saved on this browser. Your passengers and landing timer will wait.':'Your flight is paused here. Browser storage is unavailable; keep this page open.');
+ showPause(saved?'Saved on this device. Your passengers and landing timer will wait.':'Your flight is paused here. Browser storage is unavailable; keep this page open.');
 }
 function resumeFlight(){
  if(!pausedFlight)return;
@@ -54,7 +54,7 @@ try{
   seats.forEach((seat,i)=>Object.assign(seat,saved.seats[i]));familyService.restore(saved.familyState,seats);setCabinRows(saved.cabinRows??5);
   if(typeof selectAttendant==='function')selectAttendant(attendantChoice);showCareer();
   document.querySelector('.welcome-card p').textContent=routes[routeIndex].from+' → '+routes[routeIndex].to;
-  crew.style.left=(cabin.clientWidth/2-17)+'px';crew.style.top='132px';
+  crew.style.left=(cabin.clientWidth/2-17)+'px';crew.style.top=(galleyStop()-18)+'px';
   // Return the attendant to the aisle; prepared tray items are kept.
   atGalley=false;pausedFlight=true;document.body.classList.add('playing');updateCrewSprite();updateTray();render();
   showPause('Saved flight: '+routes[routeIndex].from+' → '+routes[routeIndex].to+'. Resume with your tray and orders intact.');

@@ -68,3 +68,7 @@ aside.panel{flex:0 0 144px;position:relative;width:calc(100% - 12px);height:144p
 .galley-item:last-child{border-right:0}.galley-item:active{background:#ffedb6}.galley-supplies .item-art{width:30px;height:32px}
 .family-seat{outline:0}.family-badge{display:block;position:absolute;top:-7px;bottom:auto;left:0;transform:none;padding:1px 3px;border:1px solid #c8b0d5;background:#f4eaf8;color:#6c4b7d;font-size:8px;line-height:10px;border-radius:5px;pointer-events:none;white-space:nowrap}
 @media(max-height:700px){.cabin{--front-height:96px;padding-bottom:12px}.rows{row-gap:8px}.seat{height:calc(100% - 4px);width:auto;max-width:100%;min-width:44px;aspect-ratio:3/4;justify-self:center}.seat small{bottom:-5px;font-size:7px}.family-badge{top:-7px;bottom:auto;font-size:7px}.request{right:-4px;top:-1px}.galley{height:82px;min-height:82px}.galley-title{height:28px;min-height:28px}.galley-supplies{height:44px}}
+
+.flight-hint{font-size:12px;line-height:16px;color:#315875;padding:4px 8px;white-space:normal;flex-shrink:0;max-width:100%}
+.galley-item.item-needed{background:#fff0c4;box-shadow:inset 0 -3px #d5a345}
+.reaction{font-size:14px;font-weight:800;color:#175c4a;background:#effff3;border-radius:9px;padding:2px 5px;white-space:nowrap;pointer-events:none}
