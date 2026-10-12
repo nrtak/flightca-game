@@ -11,7 +11,7 @@ returnButton.onclick=()=>{if(!running||busy||!atGalley)return;returnMode=!return
 function returnItem(item){if(!running||busy||!atGalley||!Object.hasOwn(inventory,item))return false;if(!inventory[item]){tell('No '+item+' to return.');return false}inventory[item]--;updateTray();tell('Returned one '+item+'. Space available: '+(6-stock)+'.');feedback('stock');return true}
 const trayBeforeComfort=updateTray;
 updateTray=function(){if(!atGalley)returnMode=false;trayBeforeComfort();returnButton.hidden=!atGalley;returnButton.disabled=busy;returnButton.textContent=returnMode?'Done':'Return items';returnButton.setAttribute('aria-pressed',String(returnMode));document.body.classList.toggle('returning-items',returnMode);if(returnMode){document.querySelector('.tray-head h2').textContent='RETURN TO GALLEY';document.querySelectorAll('[data-drink]').forEach(b=>b.setAttribute('aria-label','Return '+b.dataset.drink+', '+inventory[b.dataset.drink]+' on tray'))}};
-document.querySelectorAll('[data-drink]').forEach(button=>{const stockOrSelect=button.onclick;button.onclick=()=>{if(returnMode){returnItem(button.dataset.drink);return}stockOrSelect()}});
+document.querySelectorAll('[data-drink]').forEach(button=>{const stockOrSelect=button.onclick;button.onclick=()=>{if(returnMode){returnItem(button.dataset.drink);return}if(running&&atGalley){requestAction({type:"stock",item:button.dataset.drink});return}stockOrSelect()}});
 const prepareBeforeComfort=prepareDrink;
 prepareDrink=async function(item){if(!busy)returnMode=false;const before=inventory[item],id=flightId;await prepareBeforeComfort(item);if(id===flightId&&inventory[item]>before)feedback('stock')};
 const serveBeforeComfort=serve;

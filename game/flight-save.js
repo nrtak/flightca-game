@@ -12,7 +12,7 @@ document.querySelector('main').appendChild(pauseScreen);
 const saveStyle=document.createElement('style');
 saveStyle.textContent='.pause-flight{display:none;position:absolute;right:18px;top:96px;z-index:6;border:2px solid #91a6aa;border-radius:8px;background:#fffdf1;padding:8px;color:#435657}.playing .pause-flight{display:block}.flight-pause{position:absolute;inset:0;z-index:20;background:#263d4088;display:flex;align-items:center;justify-content:center}.flight-pause[hidden]{display:none}';
 document.head.appendChild(saveStyle);
-function flightSnapshot(){return {version:1,routeIndex,inventory:{...inventory},score,served,missed,remaining,ticks,selected,attendantChoice,orders:[...orders],atGalley,cabinRows,familyState:familyService.snapshot(),seats:seats.map(s=>({request:s.request,patience:s.patience,queued:Boolean(s.queued)}))}}
+function flightSnapshot(){return {version:1,passengerLayout:[...passengerLayout],routeIndex,inventory:{...inventory},score,served,missed,remaining,ticks,selected,attendantChoice,orders:[...orders],atGalley,cabinRows,familyState:familyService.snapshot(),seats:seats.map(s=>({request:s.request,patience:s.patience,queued:Boolean(s.queued)}))}}
 function saveFlight(){
  if(!running&&!pausedFlight)return false;
  try{gameStorage.setItem(flightSaveKey,JSON.stringify(flightSnapshot()));return true}
@@ -21,7 +21,7 @@ function saveFlight(){
 function clearFlightSave(){try{gameStorage.removeItem(flightSaveKey)}catch{saveAvailable=false}}
 function validFlight(s){
  const integer=(n,min,max)=>Number.isInteger(n)&&n>=min&&n<=max;
- return s&&s.version===1&&Array.isArray(s.seats)&&(s.cabinRows===undefined||s.cabinRows===4||s.cabinRows===5)&&(s.cabinRows!==4||s.seats?.slice(16).every(p=>!p.request&&!p.queued))&&integer(s.routeIndex,0,2)&&integer(s.remaining,1,120)&&integer(s.ticks,0,120)&&s.ticks+s.remaining===120&&
+ return s&&s.version===1&&(s.passengerLayout===undefined||validPassengerLayout(s.passengerLayout))&&Array.isArray(s.seats)&&(s.cabinRows===undefined||s.cabinRows===4||s.cabinRows===5)&&(s.cabinRows!==4||s.seats?.slice(16).every(p=>!p.request&&!p.queued))&&integer(s.routeIndex,0,2)&&integer(s.remaining,1,120)&&integer(s.ticks,0,120)&&s.ticks+s.remaining===120&&
  ['score','served','missed'].every(k=>integer(s[k],0,100000))&&Object.hasOwn(icons,s.selected)&&integer(s.attendantChoice,0,1)&&typeof s.atGalley==='boolean'&&
  s.inventory&&Object.keys(s.inventory).length===6&&Object.keys(icons).every(k=>integer(s.inventory[k],0,6))&&Object.values(s.inventory).reduce((a,b)=>a+b,0)<=6&&
  Array.isArray(s.seats)&&s.seats.length===seats.length&&s.seats.every(p=>p&&(p.request===null||Object.hasOwn(icons,p.request))&&integer(p.patience,0,45)&&(!p.request||p.patience>0)&&typeof p.queued==='boolean')&&
@@ -50,6 +50,7 @@ updateTray=function(){originalUpdateTray();if(running)saveFlight()};
 try{
  const saved=JSON.parse(gameStorage.getItem(flightSaveKey));
  if(validFlight(saved)){
+  if(saved.passengerLayout)passengerLayout=[...saved.passengerLayout];
   routeIndex=saved.routeIndex;inventory={...saved.inventory};score=saved.score;served=saved.served;missed=saved.missed;remaining=saved.remaining;ticks=saved.ticks;selected=saved.selected;attendantChoice=saved.attendantChoice;orders=[...saved.orders];atGalley=saved.atGalley;
   seats.forEach((seat,i)=>Object.assign(seat,saved.seats[i]));familyService.restore(saved.familyState,seats);setCabinRows(saved.cabinRows??5);
   if(typeof selectAttendant==='function')selectAttendant(attendantChoice);showCareer();

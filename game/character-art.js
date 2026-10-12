@@ -3,7 +3,10 @@
 const characterMoods=['neutral','happy','very-happy','sad','mad','very-mad'];
 const passengerNames=['Alex','Marion','Lena','Noah','Isaac','Sam'];
 let attendantChoice=1,crewDirection='down',crewAction='idle';
-function passengerIdentity(index){return index%16}
+let passengerLayout=Array.from({length:16},(_,i)=>i);
+function validPassengerLayout(layout){return Array.isArray(layout)&&layout.length===16&&new Set(layout).size===16&&layout.every(n=>Number.isInteger(n)&&n>=0&&n<16)&&((layout[4]===4&&layout[5]===5&&layout[14]===14&&layout[15]===15)||(layout[4]===14&&layout[5]===15&&layout[14]===4&&layout[15]===5))}
+function shufflePassengers(){const pool=[0,1,2,3,6,7,8,9,10,11,12,13];for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}passengerLayout=Array.from({length:16},(_,i)=>[4,5,14,15].includes(i)?i:pool.pop());if(Math.random()<.5){[passengerLayout[4],passengerLayout[14]]=[14,4];[passengerLayout[5],passengerLayout[15]]=[15,5]}}
+function passengerIdentity(index){return passengerLayout[index%16]}
 function setPassengerPortrait(element,identity,mood='neutral'){
  element.style.backgroundPosition=(identity%4*100/3)+'% '+(Math.floor(identity/4)*100/3)+'%';
  element.setAttribute('aria-label',((identity===5||identity===15)?'Child':'Passenger')+', '+mood.replaceAll('-',' '));
