@@ -4,7 +4,7 @@ import WebKit
 // The game and its assets are bundled; no network connection is needed to play.
 final class GameViewController: UIViewController, WKScriptMessageHandler, WKNavigationDelegate {
     private var webView: WKWebView!
-    private let keys = ["cabin-crew-career-v1", "cabin-crew-flight-v1"]
+    private let keys = ["cabin-crew-career-v1", "cabin-crew-flight-v1", "cabin-crew-comfort-v1"]
     private var gameDirectory: URL?
 
     override func viewDidLoad() {
@@ -12,6 +12,7 @@ final class GameViewController: UIViewController, WKScriptMessageHandler, WKNavi
         view.backgroundColor = UIColor(red: 0.91, green: 0.95, blue: 0.97, alpha: 1)
         let controller = WKUserContentController()
         controller.add(self, name: "cabinSave")
+        controller.add(self, name: "cabinFeedback")
         let snapshot = Dictionary(uniqueKeysWithValues: keys.compactMap { key -> (String, String)? in
             guard let value = UserDefaults.standard.string(forKey: key) else { return nil }
             return (key, value)
@@ -77,8 +78,17 @@ final class GameViewController: UIViewController, WKScriptMessageHandler, WKNavi
               let url = message.frameInfo.request.url, url.isFileURL,
               let directory = gameDirectory,
               url.standardizedFileURL.path.hasPrefix(directory.standardizedFileURL.path + "/"),
-              let body = message.body as? [String: Any],
-              let key = body["key"] as? String, keys.contains(key) else { return }
+              let body = message.body as? [String: Any] else { return }
+        if message.name == "cabinFeedback" {
+            guard let kind = body["kind"] as? String, ["stock", "serve"].contains(kind),
+                  let saved = UserDefaults.standard.string(forKey: "cabin-crew-comfort-v1"),
+                  let data = saved.data(using: .utf8),
+                  let settings = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any],
+                  settings["haptics"] as? Bool == true else { return }
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            return
+        }
+        guard message.name == "cabinSave", let key = body["key"] as? String, keys.contains(key) else { return }
         if body["value"] is NSNull {
             UserDefaults.standard.removeObject(forKey: key)
         } else if let value = body["value"] as? String, value.utf8.count <= 100_000 {
